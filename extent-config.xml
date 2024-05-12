@@ -2,7 +2,7 @@
 <extentreports>
   <configuration>
     <!-- report theme --> <!-- standard, dark -->
-    <theme>dark</theme>
+    <theme>standard</theme>
 
     <!-- document encoding -->  <!-- defaults to UTF-8 -->
     <encoding>UTF-8</encoding>
@@ -11,10 +11,10 @@
     <protocol>https</protocol>
 
     <!-- title of the document -->
-    <documentTitle>Crowdar QA - Extent configuration</documentTitle>
+    <documentTitle>Web Clockify</documentTitle>
 
     <!-- report name - displayed at top-nav -->
-    <reportName>Crowdar Core Report - Cucumber Report</reportName>
+    <reportName>Clockify Api Low Code</reportName>
 
     <!-- global date format override -->  <!-- defaults to yyyy-MM-dd -->
     <dateFormat>yyyy-MM-dd</dateFormat>
