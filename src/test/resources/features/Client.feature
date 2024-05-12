@@ -29,18 +29,18 @@ Feature: Client
 
   @findClient
   Scenario: Find Client on workspace
-    Given call Client.feature@getClients
+    Given call Client.feature@listProject
     And endpoint v1/workspaces/{{idWorkspace}}/clients/{{idClient}}
     When execute method GET
     Then the status code should be 200
     And response should be name = "Shopping Havan"
 
-
   @deleteClient
-  Scenario: Delete Client on workspace
-    Given call Client.feature@getClients
+  Scenario: Delete Client on workspace with reuse
+    Given call Client.feature@findClient
     And endpoint v1/workspaces/{{idWorkspace}}/clients/{{idClient}}
     When execute method DELETE
     Then the status code should be 200
+
 
 

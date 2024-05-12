@@ -5,7 +5,7 @@ Feature: Project
     And header x-api-key = MmY4ZmVjOGItMDEwMS00YjEzLWJiMTUtYWUxZGJiZWExMmJm
 
   @addProject
-  Scenario Outline: Add Project on workspace exitoso
+  Scenario Outline: Add Project on workspace
     Given call Workspace.feature@listWorkspace
     And header Content-Type = application/json
     And endpoint v1/workspaces/{{idWorkspace}}/projects
@@ -37,7 +37,7 @@ Feature: Project
     And response should be name = "Api Low Code Project"
 
 
-  Scenario: Update Project template
+  Scenario: Update Project Memberships
     Given call Project.feature@listProjects
     And header Content-Type = application/json
     And endpoint v1/workspaces/{{idWorkspace}}/projects/{{idProject}}/memberships

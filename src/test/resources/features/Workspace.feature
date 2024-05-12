@@ -17,9 +17,7 @@ Feature: Workspace
     Given endpoint v1/workspaces
     When execute method GET
     Then the status code should be 200
-    * define idWorkspace = response.[2].id
-
-
+    * define idWorkspace = response.[1].id
 
 
 
