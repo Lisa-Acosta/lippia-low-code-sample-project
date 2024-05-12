@@ -37,7 +37,7 @@ Feature: Client
 
 
   @deleteClient
-  Scenario: Delete Client on workspace with reuse
+  Scenario: Delete Client on workspace
     Given call Client.feature@getClients
     And endpoint v1/workspaces/{{idWorkspace}}/clients/{{idClient}}
     When execute method DELETE
