@@ -1,4 +1,4 @@
-@clockify @workspace
+@workspace @regression @smoke
 Feature: Workspace
   Background:
     And base url $(env.base_url_clockify)
@@ -19,6 +19,27 @@ Feature: Workspace
     Then the status code should be 200
     * define idWorkspace = response.[1].id
 
+  Scenario: Add existing Workspace failed
+    Given endpoint v1/workspaces
+    And header Content-Type = application/json
+    And body jsons/bodies/addWokspace.json
+    When execute method POST
+    Then the status code should be 400
+
+  Scenario: Add Workspace failed - wrong endpoint
+    Given endpoint v1/workspace
+    And header Content-Type = application/json
+    And body jsons/bodies/addWokspace.json
+    When execute method POST
+    Then the status code should be 404
+
+  Scenario: Add existing Workspace failed - wrong api-key
+    Given header x-api-key = NOMmY4ZmVjOGItMDEwMS00YjEzLWJiMTUtYWUxZGJiZWExMmJm
+    And endpoint v1/workspaces
+    And header Content-Type = application/json
+    And body jsons/bodies/addWokspace.json
+    When execute method POST
+    Then the status code should be 401
 
 
 
