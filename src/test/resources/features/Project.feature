@@ -1,19 +1,12 @@
 @clockify @project
-Feature: Project - Practico 4
+Feature: Project
   Background:
     And base url $(env.base_url_clockify)
     And header x-api-key = MmY4ZmVjOGItMDEwMS00YjEzLWJiMTUtYWUxZGJiZWExMmJm
 
-  @listWorkspace
-  Scenario: Get all Workspaces
-    Given endpoint v1/workspaces
-    When execute method GET
-    Then the status code should be 200
-    * define idWorkspace = response.[2].id
-
   @addProject
   Scenario Outline: Add Project on workspace exitoso
-    Given call Project.feature@listWorkspace
+    Given call Workspace.feature@listWorkspace
     And header Content-Type = application/json
     And endpoint v1/workspaces/{{idWorkspace}}/projects
     And set value <nameProject> of key name in body jsons/bodies/addProject.json
@@ -27,7 +20,7 @@ Feature: Project - Practico 4
 
   @listProjects
   Scenario: Get all Projects
-    Given call Project.feature@listWorkspace
+    Given call Workspace.feature@listWorkspace
     And header Content-Type = application/json
     And endpoint v1/workspaces/{{idWorkspace}}/projects
     When execute method GET
@@ -53,6 +46,24 @@ Feature: Project - Practico 4
     Then the status code should be 200
     And response should be name = "Api Low Code Project"
     * validate response should be memberships[0].hourlyRate.amount = "0"
+
+  @updateProject
+  Scenario: Update Project
+    Given call Project.feature@findProject
+    And header Content-Type = application/json
+    And endpoint v1/workspaces/{{idWorkspace}}/projects/{{idProject}}/
+    And body jsons/bodies/updateProject.json
+    When execute method PUT
+    Then the status code should be 200
+    And response should be name = "Api Low Code Project"
+
+  Scenario: Delete Project on Workspace
+    Given call Project.feature@updateProject
+    And header Content-Type = application/json
+    And endpoint v1/workspaces/{{idWorkspace}}/projects/{{idProject}}
+    When execute method DELETE
+    Then the status code should be 200
+
 
 
 
