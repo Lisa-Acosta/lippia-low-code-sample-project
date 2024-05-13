@@ -16,6 +16,9 @@
     <!-- report name - displayed at top-nav -->
     <reportName>Clockify Api Low Code</reportName>
 
+    <!-- location of charts in the test view -->
+    <!-- top, bottom -->
+    <testViewChartLocation>bottom</testViewChartLocation>
     <!-- global date format override -->  <!-- defaults to yyyy-MM-dd -->
     <dateFormat>yyyy-MM-dd</dateFormat>
 
