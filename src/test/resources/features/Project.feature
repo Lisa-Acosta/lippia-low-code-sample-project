@@ -1,13 +1,14 @@
-@clockify @project
+@project @regression
 Feature: Project
+
   Background:
     And base url $(env.base_url_clockify)
     And header x-api-key = MmY4ZmVjOGItMDEwMS00YjEzLWJiMTUtYWUxZGJiZWExMmJm
+    And header Content-Type = application/json
 
-  @addProject
+  @smoke
   Scenario Outline: Add Project on workspace
     Given call Workspace.feature@listWorkspace
-    And header Content-Type = application/json
     And endpoint v1/workspaces/{{idWorkspace}}/projects
     And set value <nameProject> of key name in body jsons/bodies/addProject.json
     When execute method POST
@@ -18,10 +19,9 @@ Feature: Project
       | nameProject          |
       | Api Low Code Project |
 
-  @listProjects
+  @listProjects @smoke
   Scenario: Get all Projects
     Given call Workspace.feature@listWorkspace
-    And header Content-Type = application/json
     And endpoint v1/workspaces/{{idWorkspace}}/projects
     When execute method GET
     Then the status code should be 200
@@ -30,16 +30,13 @@ Feature: Project
   @findProject
   Scenario: Find Project by ID
     Given call Project.feature@listProjects
-    And header Content-Type = application/json
     And endpoint v1/workspaces/{{idWorkspace}}/projects/{{idProject}}
     When execute method GET
     Then the status code should be 200
     And response should be name = "Api Low Code Project"
 
-
   Scenario: Update Project Memberships
     Given call Project.feature@listProjects
-    And header Content-Type = application/json
     And endpoint v1/workspaces/{{idWorkspace}}/projects/{{idProject}}/memberships
     And body jsons/bodies/memberships.json
     When execute method PATCH
@@ -50,19 +47,46 @@ Feature: Project
   @updateProject
   Scenario: Update Project
     Given call Project.feature@findProject
-    And header Content-Type = application/json
     And endpoint v1/workspaces/{{idWorkspace}}/projects/{{idProject}}/
     And body jsons/bodies/updateProject.json
     When execute method PUT
     Then the status code should be 200
     And response should be name = "Api Low Code Project"
 
+  @smoke
   Scenario: Delete Project on Workspace
     Given call Project.feature@updateProject
-    And header Content-Type = application/json
     And endpoint v1/workspaces/{{idWorkspace}}/projects/{{idProject}}
     When execute method DELETE
     Then the status code should be 200
+
+  @smoke
+  Scenario Outline: Add existing Project failed
+    Given call Workspace.feature@listWorkspace
+    And endpoint v1/workspaces/{{idWorkspace}}/projects
+    And set value <nameProject> of key name in body jsons/bodies/addProject.json
+    When execute method POST
+    Then the status code should be 400
+
+    Examples:
+      | nameProject |
+      | Api Project |
+
+  Scenario: Add Project failed - wrong endpoint
+    Given call Workspace.feature@listWorkspace
+    And endpoint v1/workspaces/{{idWorkspace}}
+    And body jsons/bodies/addProject.json
+    When execute method POST
+    Then the status code should be 405
+
+  @smoke
+  Scenario: Delete Project non-exisiting failed
+    Given call Project.feature@listProjects
+    And endpoint v1/workspaces/{{idWorkspace}}/projects/{{idProject}}
+    When execute method DELETE
+    Then the status code should be 400
+
+
 
 
 
